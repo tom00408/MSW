@@ -9,7 +9,14 @@ import Foundation
 
 struct Wallet : Identifiable, Codable{
     let id: String
+    var balance : Double
     var coins : [String: Double]
+    
+    
+    func networth() -> Double{
+        return balance
+    }
+    
 }
 
  

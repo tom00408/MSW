@@ -11,7 +11,9 @@ struct User: Identifiable, Codable {
     let id: String
     let email: String
     let username: String
-
+    var bitcoin: Int = 0
+    var ethereum: Int = 0
+    var solana: Int = 0
     
     var initials: String{
         return String(username.prefix(2)).uppercased()

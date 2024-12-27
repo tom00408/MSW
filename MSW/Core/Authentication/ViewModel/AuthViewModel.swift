@@ -70,4 +70,22 @@ class AuthViewModel: ObservableObject{
         self.currentUser = try? snapshot.data(as: User.self)
         print("User is currently\(String(describing: self.currentUser))")
     }
+    
+    
+    
+    
+    
+    func updateUserCryptos(userId: String, bitcoin: Int, ethereum: Int, solana: Int) async throws {
+        let db = Firestore.firestore()
+        try await db.collection("users").document(userId).updateData([
+            "bitcoin": bitcoin,
+            "ethereum": ethereum,
+            "solana": solana
+        ])
+        // Aktualisiere das lokale Modell
+        currentUser?.bitcoin = bitcoin
+        currentUser?.ethereum = ethereum
+        currentUser?.solana = solana
+    }
+    
 }
