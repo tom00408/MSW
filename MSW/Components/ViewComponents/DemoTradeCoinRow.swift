@@ -9,9 +9,8 @@ import Foundation
 import SwiftUI
 
 struct DemoTradeCoinRow: View {
-    
     let coinName: String
-    @Binding var amount: Int // Binding für die Anzahl
+    @Binding var amount: Double // Binding für die Coin-Menge
     
     var body: some View {
         HStack {
@@ -19,15 +18,15 @@ struct DemoTradeCoinRow: View {
             Spacer()
             
             Button {
-                amount += 1 // Erhöhe die Anzahl
+                amount += 1 // Erhöhe die Menge
             } label: {
                 Image(systemName: "plus")
             }
             
-            Text("\(amount)")
+            Text("\(amount, specifier: "%.2f")") // Zeigt die Menge mit 2 Dezimalstellen an
             
             Button {
-                amount -= 1 // Verringere die Anzahl
+                if amount > 0 { amount -= 1 } // Verhindere negative Werte
             } label: {
                 Image(systemName: "minus")
             }
@@ -37,5 +36,6 @@ struct DemoTradeCoinRow: View {
 }
 
 #Preview {
-    DemoTradeCoinRow(coinName: "Bitcoin", amount: .constant(0))
+    DemoTradeCoinRow(coinName: "Bitcoin", amount: .constant(0.5))
 }
+

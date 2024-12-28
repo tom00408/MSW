@@ -9,17 +9,11 @@ import SwiftUI
 
 struct WalletView: View {
     
-    @EnvironmentObject var viewModel : AuthViewModel
+    @StateObject var coinManager = CoinManager()
+    var user = User.TOM
     
     var body: some View {
-        if let user = viewModel.currentUser{
-            ScrollView{
-                VStack{
-                    Text("Username: \(user.username) ")
-                    Text("Hier ist dein Wallet:")
-                }
-            }
-        }
+        Text("HI")
     }
 }
 

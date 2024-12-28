@@ -7,16 +7,20 @@
 
 import Foundation
 
-struct Wallet : Identifiable, Codable{
+struct Wallet: Identifiable, Codable {
     let id: String
-    var balance : Double
-    var coins : [String: Double]
+    var balance: Double
+    var coins: [String: Double] // Kryptowährungen und ihre Mengen
     
-    
-    func networth() -> Double{
-        return balance
+    init(id: String = UUID().uuidString, balance: Double = 0.0, coins: [String: Double] = [:]) {
+        self.id = id
+        self.balance = balance
+        self.coins = coins
+        self.coins["bitcoins"] = 19
+        self.coins["ethereum"] = 10
+        self.coins["litecoin"] = 1
     }
-    
 }
+
 
  

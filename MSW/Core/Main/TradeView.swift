@@ -8,11 +8,9 @@
 import SwiftUI
 
 struct TradeView: View {
-    @EnvironmentObject var viewModel: AuthViewModel
     
-    @State private var bitcoinAmount: Int = 0
-    @State private var ethereumAmount: Int = 0
-    @State private var solanaAmount: Int = 0
+    @EnvironmentObject var viewModel: AuthViewModel
+    @State private var coinAmounts: [String: Double] = [:] // Lokaler Zustand für Coins und ihre Mengen
 
     var body: some View {
         if let user = viewModel.currentUser {
@@ -20,17 +18,23 @@ struct TradeView: View {
                 Text("Crypto-Börse")
                     .font(.system(size: 64))
                     .bold()
+                
                 Image("trading_pinguin")
                     .resizable()
                     .scaledToFill()
-                    .frame(width: 150, height: 150)
-                    .cornerRadius(100)
+                    .frame(width: 250, height: 250)
+                    .cornerRadius(150)
                     .padding(.vertical,32)
                 VStack {
-                    // Zeilen für jede Kryptowährung
-                    DemoTradeCoinRow(coinName: "Bitcoin", amount: $bitcoinAmount)
-                    DemoTradeCoinRow(coinName: "Ethereum", amount: $ethereumAmount)
-                    DemoTradeCoinRow(coinName: "Solana", amount: $solanaAmount)
+                    // Dynamisch eine Zeile für jeden Coin erstellen
+                    ForEach(Array(coinAmounts.keys), id: \.self) { coinName in
+                        if let amount = coinAmounts[coinName] {
+                            DemoTradeCoinRow(coinName: coinName, amount: Binding(
+                                get: { amount },
+                                set: { newValue in coinAmounts[coinName] = newValue }
+                            ))
+                        }
+                    }
                     
                     // Speichern-Button
                     Button {
@@ -53,29 +57,26 @@ struct TradeView: View {
                 .background(Color.gray)
                 .cornerRadius(10)
                 .onAppear {
-                    // Initialisiere die Zustände, wenn die View geladen wird
-                    bitcoinAmount = user.bitcoin
-                    ethereumAmount = user.ethereum
-                    solanaAmount = user.solana
+                    // Initialisiere die Coins aus dem personalWallet
+                    coinAmounts = user.personalWallet.coins
                 }
             }
         }
     }
     
-    // Funktion zum Speichern der Änderungen
+    // Speichert die Änderungen in Firebase
     private func saveChanges() async {
         guard let user = viewModel.currentUser else { return }
         
+        var updatedWallet = user.personalWallet
+        updatedWallet.coins = coinAmounts // Aktualisierte Coins
+        
         do {
-            try await viewModel.updateUserCryptos(
-                userId: user.id,
-                bitcoin: bitcoinAmount,
-                ethereum: ethereumAmount,
-                solana: solanaAmount
-            )
-            print("Kryptowerte erfolgreich aktualisiert!")
+            try await viewModel.updatePersonalWallet(userId: user.id, wallet: updatedWallet)
+            print("Wallet erfolgreich aktualisiert!")
         } catch {
-            print("Fehler beim Speichern der Kryptowerte: \(error.localizedDescription)")
+            print("Fehler beim Speichern der Coins: \(error.localizedDescription)")
         }
     }
 }
+
