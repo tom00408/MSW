@@ -25,6 +25,7 @@ struct CoinRowView: View {
                     .resizable()
                     .scaledToFit()
                     .frame(width: 32, height: 32)
+                    .cornerRadius(8)
                     .foregroundColor(.orange)
             } placeholder: {
                 Circle()

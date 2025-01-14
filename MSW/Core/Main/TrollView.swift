@@ -7,16 +7,16 @@
 
 import SwiftUI
 
-struct WalletView: View {
+struct TrollView: View {
     
     @StateObject var coinManager = CoinManager()
-    @EnvironmentObject var viewModel: AuthViewModel
-    //var user = User.TOM
+    //@EnvironmentObject var viewModel: AuthViewModel
+    var user = User.TOM
     
     
     var body: some View {
-        if let user = viewModel.currentUser {
-        //if true{
+        //if let user = viewModel.currentUser {
+        if true{
             NavigationStack{
                 ZStack{
                     Image("wallet")
@@ -70,5 +70,5 @@ struct WalletView: View {
 }
 
 #Preview {
-    WalletView()
+    TrollView()
 }

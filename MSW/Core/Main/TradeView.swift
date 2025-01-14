@@ -11,8 +11,8 @@ import Foundation
 struct TradeView: View {
     
     @StateObject var coinManager = CoinManager()
-    //@EnvironmentObject var viewModel : AuthViewModel
-    var user = User.TOM
+    @EnvironmentObject var viewModel : AuthViewModel
+    //var user = User.TOM
     
     @State private var selectedOption1 = "EUR"
     @State private var selectedOption2 = "EUR"
@@ -49,8 +49,8 @@ struct TradeView: View {
                 .scaleEffect(1.29)
                 .ignoresSafeArea()
                 .opacity(0.5)
-            //if let user = viewModel.currentUser {
-            if true{
+            if let user = viewModel.currentUser {
+            //if true{
                 VStack { // Hauptinhalt bleibt im VStack
                     
                     HStack {
@@ -345,7 +345,7 @@ struct TradeView: View {
         
         // Änderungen in Firebase hochladen
         do {
-            //try await viewModel.updatePersonalWallet(userId: user.id, wallet: wallet)
+            try await viewModel.updatePersonalWallet(userId: user.id, wallet: wallet)
             print("Trade erfolgreich durchgeführt: \(amount1) \(selectedOption1) gegen \(amount2) \(selectedOption2)")
         } catch {
             print("Fehler beim Hochladen des Wallets: \(error.localizedDescription)")

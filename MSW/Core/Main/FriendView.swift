@@ -9,7 +9,35 @@ import SwiftUI
 
 struct FriendView: View {
     var body: some View {
-        Text("Hier gibts alles zur Liga")
+        ZStack{
+            Image("friends")
+                .resizable()
+                .scaledToFill()
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .ignoresSafeArea()
+                .opacity(0.5)
+            ScrollView{
+                VStack{
+                    HStack{
+                        Button{
+                            print("Add Friend")
+                        }label:{
+                            HStack{
+                                //Text("Add Friend")
+                                Image(systemName: "person.2.badge.plus.fill")
+                                    .foregroundColor(Color.primary)
+                                    .font(.system(size: 30))
+                            }
+                            
+                        }
+                    }
+                    .padding()
+                    
+                    WalletValueView(user: User.TOM)
+                    WalletValueView(user: User.matte)
+                }.padding()
+            }
+        }
     }
 }
 
