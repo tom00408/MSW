@@ -38,4 +38,13 @@ extension Double {
         guard let numberAsString = numberFormatter.string(for: self) else { return "" }
         return numberAsString + "%"
     }
+    
+    func toAmountString() -> String {
+        let formatter = NumberFormatter()
+              formatter.minimumFractionDigits = 0
+              formatter.maximumFractionDigits = 2
+              formatter.numberStyle = .decimal
+              //return "TOMTEST"
+              return formatter.string(from: NSNumber(value: self)) ?? "\(self)"
+    }
 }

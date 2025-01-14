@@ -13,8 +13,36 @@ class CoinManager: ObservableObject {
     }
     
     init() {
+        print("fetching coins")
         fetchCoinsWithURLSession()
     }
+    
+    
+    func getCoinByString(symbol: String) -> Coin? {
+        if symbol == "EUR"{
+            return Coin.euro
+        }
+        if symbol == "MATH"{
+            return Coin.math
+        }
+    
+        for coin in coins {
+            if coin.symbol.uppercased() == symbol.uppercased() {
+                return coin
+            }
+        }
+        return nil
+    }
+    
+    
+    func getOptionsForTrade()->[String]{
+        var r : [String] = ["EUR"]
+        for coin in coins{
+            r.append(coin.symbol.uppercased())
+        }
+        return r
+    }
+    
 }
 
 // MARK: - URLSession

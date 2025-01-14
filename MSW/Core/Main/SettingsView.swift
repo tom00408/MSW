@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @EnvironmentObject var viewModel: AuthViewModel
-    
+    //@EnvironmentObject var viewModel: AuthViewModel
+    var user = User.TOM
     
     var body: some View {
-        if let user = viewModel.currentUser {
+        //if let user = viewModel.currentUser {
+        if true{
             List{
                 
                 
@@ -58,7 +59,7 @@ struct SettingsView: View {
                 
                 Section("Account"){
                     Button{
-                        viewModel.signOut()
+                        //viewModel.signOut()
                     }label: {
                         SettingsRowView(imageName:"arrow.left.circle.fill", title:"Log out" , description: "",color: Color.red)
                     }

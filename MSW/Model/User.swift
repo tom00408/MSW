@@ -12,22 +12,24 @@ struct User: Identifiable, Codable {
     let email: String
     let username: String
     var personalWallet: Wallet = Wallet()// Wird in Firebase gespeichert
-    var currentWallet: Wallet? // Lokal verwaltet, nicht in Firebase gespeichert
+
     
     var initials: String {
-        return String(username.prefix(2)).uppercased()
+        return String(username.prefix(1)).uppercased()
     }
     
     
-    mutating func setCurrentWallet(_ wallet: Wallet) {
-        currentWallet = wallet
-    }
-    mutating func usePersonalWallet() {
-        currentWallet = personalWallet
-    }
+    
 }
 
 
 extension User{
-    static let TOM = User(id: UUID().uuidString, email: "Toms@troll.mail", username: "T_o_m", personalWallet: Wallet(id: UUID().uuidString, balance: 1000, coins: ["BTC": 2, "ETH" : 4, "SOL": 10,"SHIB": 1000]), currentWallet: nil)
+    static let TOM = User(id: UUID().uuidString, email: "Toms@troll.mail", username: "TomT", personalWallet: Wallet(id: UUID().uuidString, balance: 0, coins: ["BTC": 0.000853, "ETH" : 0.00859, "SOL": 10]))
+    
+    static let matte = User(
+        id: "123RTOM",
+        email: "Tom@tom.com",
+        username: "matte",
+        personalWallet: Wallet(id: "mattewallet", balance: 1000, coins: ["MATH":1])
+    )
 }

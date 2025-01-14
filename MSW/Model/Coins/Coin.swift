@@ -59,12 +59,37 @@ extension Coin {
     static var sample = Coin(
         id: "Bitcoin", symbol: "BTC",
         name: "Bitcoin",
-        image: "",
+        image: "https://e7.pngegg.com/pngimages/145/494/png-clipart-gold-colored-bitcoin-coin-bitcoin-cryptocurrency-monero-initial-coin-offering-bitcoin-medal-gold-thumbnail.png",
         currentPrice: 16700,
         marketCapRank: 1,
         priceChange24H: 200,
         priceChangePercentage24H: 2.0,
         lastUpdated: "12 Uhr"
     )
+    
+    static var euro = Coin(
+        id: "Euro", symbol: "EUR",
+        name: "Euro",
+        image: "https://e7.pngegg.com/pngimages/686/817/png-clipart-euro-euro.png",
+        currentPrice: 1,
+        marketCapRank: 0,
+        priceChange24H: 0,
+        priceChangePercentage24H: 0,
+        lastUpdated: "12 Uhr"
+    )
+    
+    static var math = Coin(
+        id: "Math",
+        symbol: "MATH",
+        name: "Mathematics",
+        image: "",
+        currentPrice: 200,
+        marketCapRank: 4,
+        priceChange24H: 100.0,
+        priceChangePercentage24H: 100,
+        lastUpdated: "heute"
+    )
+        
+        
 }
 
