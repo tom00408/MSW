@@ -11,13 +11,13 @@ struct MainView: View {
                 .tabItem{
                     Label("Trade",systemImage: "arrow.up.arrow.down.square")
                 }
-            LeagueView()
-                .tabItem{
-                    Label("Liga",systemImage: "trophy")
-                }
             CoinView()
                 .tabItem {
                     Label("Market", systemImage: "bitcoinsign.circle.fill")
+                }
+            FriendView()
+                .tabItem{
+                    Label("Freunde",systemImage: "person.2.fill")
                 }
             SettingsView()
                 .tabItem{

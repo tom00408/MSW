@@ -7,12 +7,12 @@
 
 import SwiftUI
 
-struct LeagueView: View {
+struct FriendView: View {
     var body: some View {
         Text("Hier gibts alles zur Liga")
     }
 }
 
 #Preview {
-    LeagueView()
+    FriendView()
 }

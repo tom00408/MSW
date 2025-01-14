@@ -25,8 +25,10 @@ struct TradeOptionView: View {
                     .background(Color(.systemGray5))
                     
             }
+            Spacer()
             Text(coin.symbol.uppercased())
-                
+                .font(.system(size: coin.symbol.count < 5 ? 17: 16))
+            Spacer()
             
         }
     }

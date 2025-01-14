@@ -27,6 +27,9 @@ struct TradeView: View {
     @State private var isExpanded1 = false
     @State private var isExpanded2 = false
     
+    @FocusState private var isInputFocused1: Bool
+    @FocusState private var isInputFocused2: Bool
+    
     var tradeIsValid: Bool {
         return selectedOption1 != selectedOption2
         && selectedOption1 != ""
@@ -62,40 +65,55 @@ struct TradeView: View {
                                         symbol: selectedOption1
                                     ){
                                         TradeOptionView(coin: coin)
+                                            .foregroundColor(.red)
                                     }
                                     
                                     Spacer()
                                     Image(systemName: "chevron.down")
-                                        .foregroundColor(.black)
+                                        .foregroundColor(.red)
                                 }
                                 .padding()
                                 .background(Color(.systemGray6))
                                 .cornerRadius(8)
                             }
-                            TextField(
-"Anzahl",
- text: Binding(
-                                get: {
-                                    // Konvertiere Double zu String
-                                    String(amount1)
-                                },
-                                set: { newValue in
-                                    // Konvertiere String zu Double, falls möglich
-                                    if let value = Double(newValue) {
-                                        amount1 = value
-                                        amount2 = (
-                                            amount1 * selectedOptionsPrice1
-                                        )/selectedOptionsPrice2
-                                    }
+                            Spacer()
+                                .frame(height: 20)
+                            HStack{
+                                TextField(
+                                    "Anzahl",
+                                    text: Binding(
+                                        get: {
+                                            // Konvertiere Double zu String
+                                            String(amount1)
+                                        },
+                                        set: { newValue in
+                                            // Konvertiere String zu Double, falls möglich
+                                            if let value = Double(newValue) {
+                                                amount1 = value
+                                                amount2 = (
+                                                    amount1 * selectedOptionsPrice1
+                                                )/selectedOptionsPrice2
+                                            }
+                                        }
+                                    )
+                                )
+                                .keyboardType(.decimalPad) // Zeigt eine numerische Tastatur
+                                .focused($isInputFocused1)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                //.padding()
+                                Spacer()
+                                Button {
+                                    isInputFocused1 = false // Tastatur schließen
+                                } label: {
+                                    Image(systemName: "checkmark.circle") // Symbolname als String
+                                        .foregroundColor(.red)
                                 }
-                            )
-)
-                            .keyboardType(.decimalPad) // Zeigt eine numerische Tastatur
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .padding()
+                                Spacer()
+                            }.padding(.bottom, 10)
+                                
                         }
                         .zIndex(isExpanded1 ? 1 : 0) // Sicherstellen, dass Dropdown 1 im Vordergrund bleibt
-                        .frame()
+                        
                         .padding(4)
                         .background(Color(.systemGray6))
                         .cornerRadius(8)
@@ -116,7 +134,7 @@ struct TradeView: View {
                                                         TradeOptionView(coin:coin)
                                                             .padding()
                                                             .frame(maxWidth: .infinity, alignment: .leading)
-                                                            .background(Color.white)
+                                                            //.background(Color.white)
                                                             .onTapGesture {
                                                                 selectedOption1 = option
                                                                 if let price = coinManager.getCoinByString(
@@ -146,8 +164,8 @@ struct TradeView: View {
                         
                         // Pfeil zwischen beiden Dropdowns
                         Image(systemName: "arrowshape.right.circle.fill")
-                            .font(.system(size: 40))
-                            .background(Color.white)
+                            .font(.system(size: 20))
+                            .background(Color(.systemBackground))
                             .cornerRadius(20)
                         
                         // DROPDOWN 2 - optionale Coins
@@ -161,36 +179,48 @@ struct TradeView: View {
                                         symbol: selectedOption2
                                     ){
                                         TradeOptionView(coin: coin)
-                                            .foregroundColor(.red)
+                                            //.foregroundColor(.red)
                                     }
                                     Spacer()
                                     Image(systemName: "chevron.down")
-                                        .foregroundColor(.gray)
+                                        //.foregroundColor(.red)
                                 }
                                 .padding()
                                 .background(Color(.systemGray6))
                                 .cornerRadius(8)
                             }
-                            TextField("Anzahl", text: Binding(
-                                get: {
-                                    // Konvertiere Double zu String
-                                    String(amount2)
-                                },
-                                set: { newValue in
-                                    // Konvertiere String zu Double, falls möglich
-                                    if let value = Double(newValue) {
-                                        amount2 = value
-                                        amount1 = (amount2 * selectedOptionsPrice2)/selectedOptionsPrice1
-                                        
+                            Spacer()
+                                .frame(height: 20)
+                            HStack{
+                                TextField("Anzahl", text: Binding(
+                                    get: {
+                                        // Konvertiere Double zu String
+                                        String(amount2)
+                                    },
+                                    set: { newValue in
+                                        // Konvertiere String zu Double, falls möglich
+                                        if let value = Double(newValue) {
+                                            amount2 = value
+                                            amount1 = (amount2 * selectedOptionsPrice2)/selectedOptionsPrice1
+                                            
+                                        }
                                     }
+                                ))
+                                .keyboardType(.decimalPad) // Zeigt eine numerische Tastatur
+                                .focused($isInputFocused2)
+                                .textFieldStyle(RoundedBorderTextFieldStyle())
+                                
+                                Spacer()
+                                Button {
+                                    isInputFocused2 = false // Tastatur schließen
+                                } label: {
+                                    Image(systemName: "checkmark.circle")
+                                        //.foregroundColor(.red)// Symbolname als String
                                 }
-                            ))
-                            .keyboardType(.decimalPad) // Zeigt eine numerische Tastatur
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .padding()
+                                Spacer()
+                            }.padding(.bottom,10)
                         }
                         .zIndex(isExpanded2 ? 1 : 0) // Sicherstellen, dass Dropdown 2 im Vordergrund bleibt
-                        .frame()
                         .padding(4)
                         .background(Color(.systemGray6))
                         .cornerRadius(8)
@@ -206,7 +236,7 @@ struct TradeView: View {
                                                     TradeOptionView(coin:coin)
                                                         .padding()
                                                         .frame(maxWidth: .infinity, alignment: .leading)
-                                                        .background(Color.white)
+                                                        //.background(Color.white)
                                                         .onTapGesture {
                                                             selectedOption2 = option
                                                             if let price = coinManager.getCoinByString(

@@ -1,5 +1,15 @@
 import Foundation
 
+
+/*
+ Chart Curl:
+ 
+ curl -s 'https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=eur&days=1' -H 'accept: application/json'
+
+ 
+ 
+ */
+
 class CoinManager: ObservableObject {
     @Published var coins = [Coin]()
 

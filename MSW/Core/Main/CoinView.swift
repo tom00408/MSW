@@ -23,7 +23,8 @@ struct CoinView: View {
                 }
                 .navigationTitle("Live Prices")
                 .navigationBarTitleDisplayMode(.inline) // Titel zentrieren
-                .scrollContentBackground(.hidden) // Listenhintergrund transparent machen
+                .scrollContentBackground(.hidden)
+                .opacity(0.8)// Listenhintergrund transparent machen
             }
             
         }
