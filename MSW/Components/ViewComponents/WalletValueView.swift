@@ -11,10 +11,6 @@ struct WalletValueView: View {
     @StateObject var coinManager = CoinManager()
     var user: User
     
-    var wallet: Wallet {
-        print(user.personalWallet.toString())
-        return user.personalWallet
-    }
     
     var body: some View {
         VStack(spacing: 20) {
@@ -52,7 +48,7 @@ struct WalletValueView: View {
                             .fontWeight(.bold)
                             .foregroundColor(.gray)
                         Spacer()
-                        Text(wallet.getValue(coinManager: coinManager).toCurrency())
+                        Text(user.getValue(coinManager: coinManager).toCurrency())
                             .font(.title2)
                             .fontWeight(.bold)
                             //.foregroundColor(.black)
@@ -64,12 +60,11 @@ struct WalletValueView: View {
                             .fontWeight(.medium)
                             .foregroundColor(.gray)
                         Spacer()
-                        Text(wallet.get24hChangeValue(coinManager: coinManager).toCurrency())
+                        Text(user.get24hChangeValue(coinManager: coinManager).toCurrency())
                             .font(.headline)
                             .fontWeight(.bold)
                             .foregroundColor(
-                                wallet
-                                    .get24hChangeValue(
+                                user.get24hChangeValue(
                                         coinManager: coinManager
                                     ) > 0 ? .green : .red
                             )
@@ -81,12 +76,10 @@ struct WalletValueView: View {
                             .fontWeight(.medium)
                             .foregroundColor(.gray)
                         Spacer()
-                        Text(wallet.get24hChangePercentage(coinManager: coinManager).toPercentString())
+                        Text(user.get24hChangePercentage(coinManager: coinManager).toPercentString())
                             .font(.headline)
                             .fontWeight(.bold)
-                            .foregroundColor(
-                                wallet
-                                    .get24hChangeValue(
+                            .foregroundColor(user.get24hChangeValue(
                                         coinManager: coinManager
                                     ) > 0 ? .green : .red
                             )

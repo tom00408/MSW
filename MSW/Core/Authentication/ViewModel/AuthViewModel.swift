@@ -77,12 +77,12 @@ class AuthViewModel: ObservableObject{
     
     //WALLET
     
-    func updatePersonalWallet(userId: String, wallet: Wallet) async throws {
+    func updatePersonalWallet(userId: String, coins: [String:Double]) async throws {
             let db = Firestore.firestore()
             try await db.collection("users").document(userId).updateData([
-                "personalWallet": try Firestore.Encoder().encode(wallet)
+                "coins": try Firestore.Encoder().encode(coins)
             ])
-            currentUser?.personalWallet = wallet // Aktualisiere das lokale Modell
+            currentUser?.coins = coins // Aktualisiere das lokale Modell
         }
     
     

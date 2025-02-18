@@ -27,7 +27,7 @@ struct SettingsRowView: View {
                 .font(.headline)
             Spacer()
             Text(description)
-                .foregroundColor(Color.black)
+                //.foregroundColor(Color.black)
         }
 
     }

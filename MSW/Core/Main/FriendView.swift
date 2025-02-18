@@ -32,7 +32,7 @@ struct FriendView: View {
                         }
                     }
                     .padding()
-                    
+                    //Wallet Views aller Freunde
                     WalletValueView(user: User.TOM)
                     WalletValueView(user: User.matte)
                 }.padding()
@@ -44,3 +44,15 @@ struct FriendView: View {
 #Preview {
     FriendView()
 }
+
+
+
+
+
+
+
+
+
+
+
+

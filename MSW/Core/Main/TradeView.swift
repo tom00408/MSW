@@ -30,6 +30,9 @@ struct TradeView: View {
     @FocusState private var isInputFocused1: Bool
     @FocusState private var isInputFocused2: Bool
     
+    @State var showingTradeAlert: Bool = false
+    @State var tradeAlertMessage: String = ""
+    
     var tradeIsValid: Bool {
         return selectedOption1 != selectedOption2
         && selectedOption1 != ""
@@ -87,8 +90,12 @@ struct TradeView: View {
                                             String(amount1)
                                         },
                                         set: { newValue in
+                                            
+                                            let sanitizedValue = newValue.replacingOccurrences(of: ",", with: ".")
                                             // Konvertiere String zu Double, falls möglich
-                                            if let value = Double(newValue) {
+                                            if let value = Double(
+                                                sanitizedValue
+                                            ) {
                                                 amount1 = value
                                                 amount2 = (
                                                     amount1 * selectedOptionsPrice1
@@ -123,14 +130,11 @@ struct TradeView: View {
                                     ScrollView {
                                         VStack(spacing: 0) {
                                             ForEach(
-                                                user.personalWallet
-                                                    .getOptionsForTrade(),
+                                                user.getOptionsForTrade(),
                                                 id: \.self
                                             ) { option in
                                                 if let coin = coinManager.getCoinByString(
                                                     symbol: option) {
-                                                    if(coin.symbol != "EUR"){
-                                                        
                                                         TradeOptionView(coin:coin)
                                                             .padding()
                                                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -145,7 +149,7 @@ struct TradeView: View {
                                                                 
                                                                 isExpanded1 = false // Dropdown schließen
                                                             }
-                                                    }
+                                                    
                                                 }
                                                 
                                             }
@@ -198,8 +202,10 @@ struct TradeView: View {
                                         String(amount2)
                                     },
                                     set: { newValue in
+                                        
+                                        let sanitizedValue = newValue.replacingOccurrences(of: ",", with: ".")
                                         // Konvertiere String zu Double, falls möglich
-                                        if let value = Double(newValue) {
+                                        if let value = Double(sanitizedValue) {
                                             amount2 = value
                                             amount1 = (amount2 * selectedOptionsPrice2)/selectedOptionsPrice1
                                             
@@ -319,36 +325,47 @@ struct TradeView: View {
             }
                 .background(Color(.systemBackground))
                 .edgesIgnoringSafeArea(.all)
+                .alert("Notice",isPresented: $showingTradeAlert){
+                    Button("Okay!",role: .cancel){}
+                } message: {
+                    Text(tradeAlertMessage)
+                }
         
     }
     
     func makeTrade(user: User) async {
         // Referenz auf das Wallet
-        var wallet = user.personalWallet
+        var coins = user.coins
         
         // Prüfen, ob die erste Option existiert und genug Guthaben vorhanden ist
-        guard let currentAmount1 = wallet.coins[selectedOption1], currentAmount1 >= amount1 else {
+        guard let currentAmount1 = coins[selectedOption1], currentAmount1 >= amount1 else {
             print("Selected Option 1 not found in Wallet or insufficient balance")
+            tradeAlertMessage = "Du hast leider nicht genug \(selectedOption1)"
+            showingTradeAlert = true
             return
         }
         
         // Guthaben anpassen
-        wallet.coins[selectedOption1] = currentAmount1 - amount1
+        coins[selectedOption1] = currentAmount1 - amount1
         
         // Prüfen, ob der hinzuzufügende Coin existiert
-        if let currentAmount2 = wallet.coins[selectedOption2] {
-            wallet.coins[selectedOption2] = currentAmount2 + amount2
+        if let currentAmount2 = coins[selectedOption2] {
+            coins[selectedOption2] = currentAmount2 + amount2
         } else {
             // Wenn der Coin noch nicht existiert, wird er mit dem Betrag hinzugefügt
-            wallet.coins[selectedOption2] = amount2
+            coins[selectedOption2] = amount2
         }
         
         // Änderungen in Firebase hochladen
         do {
-            try await viewModel.updatePersonalWallet(userId: user.id, wallet: wallet)
+            try await viewModel.updatePersonalWallet(userId: user.id, coins: coins)
             print("Trade erfolgreich durchgeführt: \(amount1) \(selectedOption1) gegen \(amount2) \(selectedOption2)")
+            tradeAlertMessage = "Du hast \(amount2) \(selectedOption2) erhalten"
+            showingTradeAlert = true
         } catch {
             print("Fehler beim Hochladen des Wallets: \(error.localizedDescription)")
+            tradeAlertMessage = "Es gab einen Fehler bei deinem Trade"
+            showingTradeAlert = true
         }
     }
 

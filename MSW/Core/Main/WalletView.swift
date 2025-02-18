@@ -34,7 +34,7 @@ struct WalletView: View {
                         
                         
                         
-                        if let coin = coinManager.getCoinByString(symbol: "EUR"), let balance = user.personalWallet.coins["EUR"]{
+                        if let coin = coinManager.getCoinByString(symbol: "EUR"), let balance = user.coins["EUR"]{
                             WalletCoinRowView(coin: coin, amount: balance)
                                 .padding(.horizontal, 30)
                                 .padding(.bottom, 20)
@@ -43,10 +43,10 @@ struct WalletView: View {
                         }
                         
                         ScrollView {
-                            ForEach(user.personalWallet.coins.keys.sorted(), id: \.self) { key in
+                            ForEach(user.coins.keys.sorted(), id: \.self) { key in
                                 if key != "EUR"{
                                     if let coin = coinManager.getCoinByString(symbol: key),
-                                       let amount = user.personalWallet.coins[key] {
+                                       let amount = user.coins[key] {
                                         NavigationLink(destination: CoinDetailView(coin: coin)){
                                             WalletCoinRowView(coin: coin, amount: amount)
                                                 .padding(.horizontal, 30)
@@ -54,7 +54,7 @@ struct WalletView: View {
                                     }else{
                                         HStack{
                                             Text("\(key)")
-                                            Text("\(user.personalWallet.coins[key] ?? 0)")
+                                            Text("\(user.coins[key] ?? 0)")
                                         }
                                     }
                                 }

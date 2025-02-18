@@ -3,10 +3,10 @@ import SwiftUI
 struct MainView: View {
     var body: some View {
         TabView {
-            TrollView()
+            /*TrollView()
                 .tabItem{
                     Label("TR",systemImage: "tengesign.arrow.trianglehead.counterclockwise.rotate.90")
-                }
+                }*/
             WalletView()
                 .tabItem{
                     Label("Wallet",systemImage: "wallet.bifold")
